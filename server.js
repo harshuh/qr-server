@@ -8,7 +8,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://qr-client-rose.vercel.app/",
+    origin: "*",
     methods: ["GET", "POST"],
     optionsSuccessStatus: 200,
     credentials: true, // Allow cookies if needed
