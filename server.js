@@ -26,7 +26,7 @@ const { ticketRouter } = require("./routes/ticketRoute");
 const { adminRouter } = require("./routes/adminRoute");
 
 // API Routes
-app.get("/", (req, res) => {
+app.get("/welcome@", (req, res) => {
   res.send({ message: "hello" });
 });
 app.use("/customer", ticketRouter);
