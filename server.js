@@ -1,18 +1,22 @@
-//dotEnV
-require("dotenv").config();
-
-//Express
 const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
 const app = express();
 
-//use
-const cors = require("cors");
+// CORS Configuration
+const allowedOrigins = ["https://qr-server-nine.vercel.app/"];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Allow cookies if needed
+  })
+);
 
-app.use(cors());
 app.use(express.json());
 
-// Mongoose
-const mongoose = require("mongoose");
+// MongoDB Connection
 mongoose.connect(
   "mongodb+srv://gbusoict:hkEYqO4IxZyDFpQk@cluster.wum2k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster/"
 );
@@ -21,14 +25,14 @@ mongoose.connect(
 const { ticketRouter } = require("./routes/ticketRoute");
 const { adminRouter } = require("./routes/adminRoute");
 
-// Routers
+// API Routes
 app.get("/", (req, res) => {
-  res.send({
-    message: "hello",
-  });
+  res.send({ message: "hello" });
 });
 app.use("/customer", ticketRouter);
 app.use("/api", adminRouter);
 
-// Server Port & Listen
-app.listen(8080);
+// Start Server
+app.listen(8080, () => {
+  console.log("Server running on port 8080");
+});
