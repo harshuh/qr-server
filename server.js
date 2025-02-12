@@ -7,8 +7,8 @@ const app = express();
 // CORS Configuration
 const allowedOrigins = [
   "https://qr-server-nine.vercel.app/",
-  // "https://qr-server-nine.vercel.app/api/gbu",
-  // "https://qr-server-nine.vercel.app/customer/scanner",
+  "https://qr-server-nine.vercel.app/api/gbu",
+  "https://qr-server-nine.vercel.app/customer/scanner",
 ];
 app.use(
   cors({
