@@ -27,7 +27,7 @@ const { adminRouter } = require("./routes/adminRoute");
 
 // API Routes
 app.get("/", (req, res) => {
-  res.json({ message: "Hello" });
+  res.send("Hello from Vercel!");
 });
 app.use("/customer", ticketRouter);
 app.use("/api", adminRouter);
