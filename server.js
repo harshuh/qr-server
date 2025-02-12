@@ -5,11 +5,12 @@ const mongoose = require("mongoose");
 const app = express();
 
 // CORS Configuration
-const allowedOrigins = ["https://qr-server-nine.vercel.app/api/gbu"];
+
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "https://qr-client-rose.vercel.app/",
     methods: ["GET", "POST"],
+    optionsSuccessStatus: 200,
     credentials: true, // Allow cookies if needed
   })
 );
