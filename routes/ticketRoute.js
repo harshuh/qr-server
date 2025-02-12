@@ -30,7 +30,7 @@ const scannerHandler = async (req, res) => {
     if (!qrData) {
       return res
         .status(400)
-        .json({ error: "Transadsadaction ID and Year required" });
+        .json({ error: "Transaction ID and Year required" });
     }
     var trxnid = qrData;
 
