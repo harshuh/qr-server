@@ -5,8 +5,8 @@ const ticketRouter = Router();
 
 const { Ticket } = require("../db");
 
-// user Pannel
-const creteTicket = async (req, res) => {
+// Create Ticket
+const createTicket = async (req, res) => {
   try {
     const { trxnid, year, scanned } = req.body;
 
@@ -16,27 +16,25 @@ const creteTicket = async (req, res) => {
 
     await Ticket.create({ trxnid, year, scanned });
 
-    res.json({ message: " your trxid is " + trxnid });
+    return res.json({ message: "Your trxid is " + trxnid });
   } catch (error) {
-    res.status(500).json({ error: "this is taken" });
+    console.error("Error in createTicket:", error);
+    return res
+      .status(500)
+      .json({ error: "Transaction ID already taken or Server Error" });
   }
 };
 
-// scan
+// Scan Ticket
 const scannerHandler = async (req, res) => {
   try {
     const { qrData } = req.body;
 
     if (!qrData) {
-      return res
-        .status(400)
-        .json({ error: "Transaction ID and Year required" });
+      return res.status(400).json({ error: "Transaction ID required" });
     }
-    var trxnid = qrData;
 
-    const customer = await Ticket.findOne({
-      trxnid,
-    });
+    const customer = await Ticket.findOne({ trxnid: qrData });
 
     if (!customer) {
       return res.status(404).json({ error: "Customer not found!" });
@@ -45,17 +43,18 @@ const scannerHandler = async (req, res) => {
     if (!customer.scanned) {
       customer.scanned = true;
       await customer.save();
-      res.json({ message: "Ticket Scanned Successfully" });
+      return res.json({ message: "Ticket Scanned Successfully" });
     } else {
-      res.json({ message: "Hey cheater, you scanned again!" });
+      return res.json({ message: "Hey cheater, you scanned again!" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Server error", error });
+    console.error("Error in scannerHandler:", error);
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
-// user routes
-ticketRouter.post("/ticket", creteTicket);
+// User routes
+ticketRouter.post("/ticket", createTicket);
 ticketRouter.post("/scanner", scannerHandler);
 
 module.exports = {
