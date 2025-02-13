@@ -34,25 +34,22 @@ const scannerHandler = async (req, res) => {
       return res.status(400).json({ error: "Transaction ID required" });
     }
 
-    const customer = await Ticket.findOne({ trxnid: qrData });
+    const customer = await Ticket.findOne({ trxnid: qrData, scanned: false });
 
     if (!customer) {
-      return res.status(404).json({ error: "Customer not found!" });
+      return res
+        .status(404)
+        .json({ error: "Customer not found or already scanned!" });
     }
 
-    if (!customer.scanned) {
-      customer.scanned = true;
-      await customer.save();
-      return res.json({ message: "Ticket Scanned Successfully" });
-    } else {
-      return res.json({ message: "Hey cheater, you scanned again!" });
-    }
+    customer.scanned = true;
+    await customer.save();
+    return res.json({ message: "Ticket Scanned Successfully" });
   } catch (error) {
     console.error("Error in scannerHandler:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };
-
 // User routes
 ticketRouter.post("/ticket", createTicket);
 ticketRouter.post("/scanner", scannerHandler);
